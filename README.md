@@ -11,24 +11,24 @@
 
 # Deployment Steps
 
-1. Create AWS Resources
+## Create AWS Resources
 
-## S3 Bucket
+1. S3 Bucket
 
 - Navigate to S3 in AWS Console → Create a new S3 Bucket.
 - Note the ARN for later use.
 
-## DynamoDB Table
+2. DynamoDB Table
 
 - Navigate to DynamoDB → Create a table with Partition Key & Sort Key.
 - Note the ARN.
 
-## SNS Topic
+3. SNS Topic
 
 - Navigate to SNS → Create a Standard SNS Topic.
 - Create a Subscription (Protocol: Email, add your email, and confirm via email).
 
-2. Create IAM Roles
+4. Create IAM Roles
 
 - Lambda Role for S3 & DynamoDB
 - Create an IAM Policy with S3 (Get/List) and DynamoDB (Put/BatchWrite) permissions.
@@ -37,32 +37,32 @@
 - Create another IAM Policy with DynamoDB (Get/Put/Query/Scan) and SNS (Publish) permissions.
 - Attach policy to a new IAM Role.
 
-3. Deploy Lambda Functions
+## Deploy Lambda Functions
 
-## Lambda: S3 to DynamoDB
+1. Lambda: S3 to DynamoDB
 
 - Create a Lambda function (Runtime: Python).
 - Upload the provided Python script to process CSV files from S3 → DynamoDB.
 - Set S3 as a trigger (Event type: Object created, Suffix: .csv).
 - Assign the S3-DynamoDB Role.
 
-## Lambda: DynamoDB to SNS
+2. Lambda: DynamoDB to SNS
 
 - Create another Lambda function to scan DynamoDB and send SNS notifications.
 - Set DynamoDB as a trigger.
 - Assign the DynamoDB-SNS Role.
 
-4. Testing
+## Testing
 
 - Upload a CSV file (Store, Product, Count) to S3.
 - Lambda processes file & updates DynamoDB.
 - If inventory < 5, an email alert is sent via SNS.
 
-5. Cleanup (Optional)
+## Cleanup (Optional)
 
 - Delete S3 Bucket, SNS Topic, DynamoDB Table, Lambda Functions, IAM Roles/Policies.
 
-6. Infrastructure as Code (Optional)
+## Infrastructure as Code (Optional)
 
 ### Use CloudFormation to automate deployment:
 
